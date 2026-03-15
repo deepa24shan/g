@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gentian AI - Next-Gen Intelligence</title>
+    <style>
+        :root {
+            --bg-dark: #05050A;
+            --primary: #6E3AFF;
+            --primary-glow: rgba(110, 58, 255, 0.5);
+            --secondary: #00F0FF;
+            --text-main: #FFFFFF;
+            --text-muted: #8A8A9D;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(110, 58, 255, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.15), transparent 25%);
+        }
+
+        /* Ambient animated background grid */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 50px 50px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            z-index: -1;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px);
+            }
+
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(5, 5, 10, 0.7);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .btn-glow {
+            background: linear-gradient(90deg, var(--primary), #8B5CF6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary-glow);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px var(--primary), 0 0 10px var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 5% 50px;
+            position: relative;
+        }
+
+        .hero-badge {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            color: var(--secondary);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            font-size: clamp(40px, 6vw, 72px);
+            line-height: 1.1;
+            margin: 0 0 24px;
+            font-weight: 800;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #FFFFFF, #A5A5C0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 0 40px;
+            line-height: 1.6;
+        }
+
+        /* 3D Visual Element */
+        .orb-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin: 40px auto;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .orb {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(110, 58, 255, 0.8), rgba(0, 240, 255, 0.2) 60%, transparent);
+            box-shadow:
+                inset 0 0 50px rgba(255, 255, 255, 0.2),
+                0 0 100px rgba(110, 58, 255, 0.4),
+                0 0 50px rgba(0, 240, 255, 0.2);
+            position: absolute;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .orb::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 320px;
+            height: 320px;
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+            animation: spin 10s linear infinite;
+        }
+
+        .orb::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 260px;
+            height: 260px;
+            border: 1px dashed rgba(110, 58, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateY(75deg) rotateZ(45deg);
+            animation: spin 8s linear infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg);
+            }
+        }
+
+        /* Payment Section */
+        .payment-section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .checkout-container {
+            display: flex;
+            gap: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .payment-methods {
+            flex: 1;
+        }
+
+        .payment-details {
+            flex: 1.2;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .method-tab {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .method-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .method-tab.active {
+            background: linear-gradient(145deg, rgba(110, 58, 255, 0.2), rgba(110, 58, 255, 0.05));
+            border-color: var(--primary);
+            box-shadow: inset 0 0 20px rgba(110, 58, 255, 0.1);
+        }
+
+        .method-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .method-info h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+        }
+
+        .method-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .crypto-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .crypto-coin {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .crypto-coin:hover,
+        .crypto-coin.active {
+            border-color: #F7931A;
+            /* Bitcoin Orange Example */
+            background: rgba(247, 147, 26, 0.1);
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(110, 58, 255, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(110, 58, 255, 0.4);
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+
+        .secure-badge svg {
+            fill: #4CAF50;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* 3D Secure Modal Simulation */
+        .secure-3d-modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .secure-3d-content {
+            background: var(--bg-dark);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(110, 58, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin-loader 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin-loader {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <!-- Import Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="grid-bg"></div>
+
+    <nav>
+        <div class="logo">
+            <i data-lucide="cpu" color="#00F0FF"></i>
+            <span>Gentian AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Platform</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#payment">Checkout API</a>
+        </div>
+        <a href="#payment" class="btn-glow">Get Started</a>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-badge">Next-Gen Payment Infrastructure</div>
+        <h1 class="text-gradient">Redefining AI Transactions</h1>
+        <p>Experience seamless 2D/3D Secure card payments, digital wallets, and borderless crypto processing integrated
+            deeply with our AI core engine.</p>
+
+        <div class="orb-container">
+            <div class="orb"></div>
+        </div>
+    </section>
+
+    <section class="payment-section" id="payment">
+        <div class="section-header">
+            <h2>Universal Gateway</h2>
+            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto;">Interact with our cutting-edge
+                unified payment interface designed for the intelligent web.</p>
+        </div>
+
+        <div class="checkout-container">
+            <!-- Payment Method Selection -->
+            <div class="payment-methods">
+                <div class="method-tab active" onclick="switchTab('card')">
+                    <div class="method-icon"><i data-lucide="credit-card"></i></div>
+                    <div class="method-info">
+                        <h3>Credit / Debit Card</h3>
+                        <p>2D / 3D Secure Processing</p>
+                    </div>
+                </div>
+
+                <div class="method-tab" onclick="switchTab('wallet')">
+                    <div class="method-icon"><i data-lucide="smartphone"></i></div>
+                    <div class="method-info">
+                        <h3>Digital Wallets</h3>
+                        <p>Apple Pay & Google Pay</p>
+                    </div>
+                </div>
+
+                <div class="method-tab" onclick="switchTab('crypto')">
+                    <div class="method-icon"><i data-lucide="bitcoin"></i></div>
+                    <div class="method-info">
+                        <h3>Cryptocurrency</h3>
+                        <p>Web3 Native Payments</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Details Form -->
+            <div class="payment-details" style="position: relative;">
+
+                <!-- 3D Secure Simulation Overlay -->
+                <div class="secure-3d-modal" id="secure3d">
+                    <div class="secure-3d-content">
+                        <div class="loader"></div>
+                        <h3 style="margin: 0 0 10px;">Authenticating...</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Connecting to your bank for 3D
+                            Secure verification.</p>
+                    </div>
+                </div>
+
+                <!-- Card Mode -->
+                <div id="form-card">
+                    <h3 style="margin-top: 0; margin-bottom: 24px;">Enter Card Details</h3>
+                    <div class="form-group">
+                        <label>Cardholder Name</label>
+                        <input type="text" class="form-control" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>CVC</label>
+                            <input type="text" class="form-control" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                    <!-- 3D Secure Toggle -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <input type="checkbox" id="require3d" checked style="accent-color: var(--primary);">
+                        <label for="require3d"
+                            style="font-size: 14px; color: var(--text-muted); cursor: pointer;">Enable 3D Secure
+                            Verification</label>
+                    </div>
+                    <button class="btn-pay" onclick="handlePayClick()">Pay $499.00</button>
+
+                    <div class="secure-badge">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                        End-to-End Encrypted
+                    </div>
+                </div>
+
+                <!-- Wallet Mode -->
+                <div id="form-wallet"
+                    style="display: none; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h3 style="margin-top: 0; margin-bottom: 24px;">Express Checkout</h3>
+                    <button class="btn-pay"
+                        style="background: #000; border: 1px solid #333; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px;">
+                        <i data-lucide="apple" style="width: 20px;"></i> Pay
+                    </button>
+                    <button class="btn-pay"
+                        style="background: #FFF; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                            style="width: 18px;" alt="G">
+                        Pay
+                    </button>
+                </div>
+
+                <!-- Crypto Mode -->
+                <div id="form-crypto" style="display: none;">
+                    <h3 style="margin-top: 0; margin-bottom: 24px;">Select Network</h3>
+                    <div class="crypto-options">
+                        <div class="crypto-coin active">
+                            <i data-lucide="bitcoin" style="color: #F7931A;"></i>
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">Bitcoin</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">BTC</div>
+                            </div>
+                        </div>
+                        <div class="crypto-coin">
+                            <i data-lucide="hexagon" style="color: #627EEA;"></i>
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">Ethereum</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">ETH</div>
+                            </div>
+                        </div>
+                        <div class="crypto-coin">
+                            <div
+                                style="width: 20px; height: 20px; background: #26A17B; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold;">
+                                T</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">Tether</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">USDT</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; text-align: center; border: 1px dashed rgba(255,255,255,0.2);">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa&bgcolor=FFFFFF"
+                            alt="QR Code"
+                            style="border-radius: 8px; margin-bottom: 16px; width: 120px; border: 4px solid white;">
+                        <div
+                            style="font-size: 12px; color: var(--text-muted); word-break: break-all; font-family: monospace;">
+                            bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // UI Logic
+        const tabs = document.querySelectorAll('.method-tab');
+        const formCard = document.getElementById('form-card');
+        const formWallet = document.getElementById('form-wallet');
+        const formCrypto = document.getElementById('form-crypto');
+        const secureModal = document.getElementById('secure3d');
+
+        // Initial state
+        formWallet.style.display = 'none';
+        formCrypto.style.display = 'none';
+
+        function switchTab(type) {
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            formCard.style.display = 'none';
+            formWallet.style.display = 'none';
+            formCrypto.style.display = 'none';
+
+            if (type === 'card') {
+                formCard.style.display = 'block';
+            } else if (type === 'wallet') {
+                formWallet.style.display = 'flex';
+                formWallet.style.flexDirection = 'column';
+            } else if (type === 'crypto') {
+                formCrypto.style.display = 'block';
+            }
+        }
+
+        // Crypto Selection
+        const coins = document.querySelectorAll('.crypto-coin');
+        coins.forEach(coin => {
+            coin.addEventListener('click', () => {
+                coins.forEach(c => c.classList.remove('active'));
+                coin.classList.add('active');
+            });
+        });
+
+        // 3D Secure Simulation
+        function handlePayClick() {
+            const is3DEnabled = document.getElementById('require3d').checked;
+
+            if (is3DEnabled) {
+                secureModal.style.display = 'flex';
+
+                // Simulate Bank Verification Delay
+                setTimeout(() => {
+                    secureModal.innerHTML = `
+                        <div class="secure-3d-content" style="border-color: #4CAF50;">
+                            <i data-lucide="check-circle" style="color: #4CAF50; width: 48px; height: 48px; margin: 0 auto 16px; display: block;"></i>
+                            <h3 style="margin: 0 0 10px;">Payment Successful</h3>
+                            <p style="font-size: 13px; color: var(--text-muted); margin: 0;">3D Secure verified successfully.</p>
+                        </div>
+                    `;
+                    lucide.createIcons();
+
+                    setTimeout(() => {
+                        secureModal.style.display = 'none';
+                        // Reset modal HTML
+                        secureModal.innerHTML = `
+                            <div class="secure-3d-content">
+                                <div class="loader"></div>
+                                <h3 style="margin: 0 0 10px;">Authenticating...</h3>
+                                <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Connecting to your bank for 3D Secure verification.</p>
+                            </div>
+                        `;
+                        alert("Transaction complete (2D & 3D flow simulated).");
+                    }, 2000);
+                }, 2500);
+            } else {
+                alert("Processing 2D Payment... Transaction Complete!");
+            }
+        }
+    </script>
+</body>
+
+</html>
